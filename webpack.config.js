@@ -1,13 +1,13 @@
 const path = require('path');
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-
 module.exports = {
     entry: './src/js/main.js',
     // output: {
     //     path: __dirname + "/dist",
     //     filename: 'bundle.js',
     // },
+    devtool: 'source-map',
     module: {
         rules: [
             {
@@ -26,13 +26,33 @@ module.exports = {
                 use: [
                     {
                         loader: "html-loader",
-                        // options: { minimize: true }
+                        options: { minimize: true }
                     }
                 ]
             },
             {
                 test: /\.scss$/,
-                use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
+                use: [
+                    MiniCssExtractPlugin.loader, 
+                    "css-loader",
+                    "postcss-loader",
+                    "sass-loader"
+                ]
+            },
+            {
+                test: /\.(png|jpe?g)/i,
+                use: [
+                    {
+                        loader: "url-loader",
+                        options: {
+                            name: "./img/[name].[ext]",
+                            limit: 10000
+                        }
+                    },
+                    {
+                        loader: "img-loader"
+                    }
+                ]
             }
         ]
     },
@@ -50,3 +70,4 @@ module.exports = {
 
 // todo
 // eslint
+// sourcemaps
